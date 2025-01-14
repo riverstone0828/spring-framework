@@ -1,0 +1,48 @@
+server:
+  servlet:
+    context-path: /tlo/api
+    session:
+      cookie:
+        path: "/tlo/api" # 쿠키 경로
+        name: "BPSESSION" # 쿠키 명
+spring:
+  config:
+    import: classpath:endpoint-function-ids.yml # TLO 기능 id를 정의해놓은 yml파일
+  profiles:
+    active: local # 기본으로 활성화할 profile
+  application:
+    name: tlo-sample # 어플리케이션 명
+  web:
+    resources:
+      add-mappings: false # 스프링이 static 파일까지 찾아보는것을 방지하기 위한 설정
+logging:
+  config: classpath:/log4j2/log4j2-${spring.profiles.active}.xml
+
+
+user-agent: # TLO 로그 작성시 모바일 기기 정보를 알아내기 위한 디바이스 정보
+  devices:
+    - name: 'iPhone'
+      pattern-regex: 'iPhone\s+OS\s+([0-9_]+)\s+like\s+Mac\s+OS\s+X'
+      version-regex: '([0-9_]+)'
+      os-tag: 'ios'
+    - name: 'Android'
+      pattern-regex: 'Android\s+([0-9.]+);\s*(\w+(-|\s)\w+)\s+Build\/(\w+)'
+      version-regex: '([0-9.]+)'
+      os-tag: 'android'
+    - name: 'iPad'
+      pattern-regex: 'iPad; CPU (?:iPhone )?OS ([0-9_]+) like Mac OS X'
+      version-regex: '([0-9_]+)'
+      os-tag: 'ios'
+    - name: 'BlackBerry'
+      pattern-regex: 'BlackBerry(?:\d+)/([0-9.]+)'
+      version-regex: '([0-9.]+)'
+      os-tag: 'blackberry'
+    - name: 'Windows Phone'
+      pattern-regex: 'Windows Phone (?:OS )?([0-9.]+)'
+      version-regex: '([a-zA-Z]+)'
+      os-tag: null
+
+mybatis:
+  mapper-locations: classpath:mappers/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true

@@ -1,0 +1,68 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.1'
+    id 'io.spring.dependency-management' version '1.1.5'
+    id 'war'
+}
+
+group = 'com.lguplus'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+
+    // Spring boot
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+    // Swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
+    // DB
+    implementation 'com.h2database:h2'
+    implementation 'com.google.guava:guava:32.1.3-jre'
+
+    // Mybatis
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+
+
+}
+
+configurations {
+    all*.exclude module: 'spring-boot-starter-logging'  //log4j2를 위한 springboot 기본 log 의존성 제거
+}
+tasks.named('test') {
+    useJUnitPlatform()
+}
+tasks.named('bootJar') {
+    enabled = false // JAR 빌드 비활성화
+}
+
+tasks.withType(Test) {
+    enabled = false
+}
+
+war {
+    archiveFileName = 'bizonportalSvrWebApp.war'
+}
+
