@@ -17,6 +17,11 @@ spring:
       enabled: true
       path: /h2-console
 
+  datasource2:
+    url: jdbc:bigquery://https://www.googleapis.com/bigquery/v2:443;DefaultDataset=TA_DATASET
+    username: your-service-account-email
+    password: your-service-account-password
+
 springdoc:
   packages-to-scan: com.example.tlo.api
   default-produces-media-type: application/json;charset=UTF-8
